@@ -6,9 +6,9 @@
 #include <thread>
 #include <queue>
 #include <chrono>
-// remove comment to enable colored outputs (only on Windows), as well
-// as all the commented code in the solve function in Display.cpp (line 666)
-//#include <windows.h>
+/* remove comment to enable colored outputs (only on Windows), as well
+   as all the commented code in the solve function in Display.cpp (line 666)
+   #include <windows.h>*/
 #include "shader.h"
 #include "Solver.h"
 #include "stb_image.h"

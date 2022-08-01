@@ -30,12 +30,13 @@ Here is a summary of each phase:
 |      3      |  $8! \times \binom{8}{4} = 2822400$   |              13           |        10        |
 |      4      |  $96 \times \frac{4!^3}{2} = 663552$  |              15           |        6         |
 
-Adding up the # moves column, the theoretical maximum number of moves to solve a cube is 45.
+Adding up the # moves column, we see that the total maximum number of moves to solve a cube is 45.
 
-### Pattern Database
+### IDA*
 Although BFS can be used to find the path from one group to the next, it is slow. A* search is considerably faster because it is informed by a heuristic. It is capable of knowing whether applying a move brings it closer to the solution, and it does this by minimizing the "cost" of its path. The heuristic in this case is the number of moves away from the next phase. IDA* is a version of iterative deepening depth-first search that uses heuristics like A*, but saves memory because it only keeps track of nodes on its current path. Unlike A*, IDA* can potentially re-explore the same nodes, but the sheer number of states at each phase means re-exploration is unlikely for this purpose.
 
-Here, IDA* is used to find the shortest path from one phase to the next, using pattern databases with pre-computed distances as a heuristic. The database stores all possible states of interest for a particular phase as well as the number of moves it is away from a solved state. For example, generating the Phase 0 database would involve iteratively applying the 18 allowed moves to a solved cube, creating a unique id for their respective edge orientation states, and recording their ids as being 1 move away from Phase 1. This process continues until all 2048 possible edge orientation combinations with their respective distances are recorded in the database.To use the table, one would calculate and look up the current id of the scrambled cube for its associated distance.
+### Pattern Databases
+Here, IDA* is used to find the shortest path from one phase to the next, using pattern databases with pre-computed distances as a heuristic. The database stores all possible states for a particular phase as well as the number of moves it is away from a solved state. For example, generating the Phase 0 database would involve iteratively applying the 18 allowed moves to a solved cube, creating a unique id for their respective edge orientation states, and recording their ids as being 1 move away from Phase 1. This process continues until all 2048 possible edge orientation combinations with their respective distances are recorded in the database. Here, a BFS is used to generate the databases and data is stored in .bin files for quick reading and writing. To use the table, one would calculate and look up the current id of the scrambled cube for its associated distance.
 
 ## Statistics
 The following graphs were made from 300 data points with 5 outliers removed. Each trial applied a random 20-move scramble to a solved cube prior to measuring solving stats. A log transformation was applied to the right-skewed solution time data points to normalize it. The mean solving time is 650.84 milliseconds, the mean number of moves is 31.26, and the maximum number of moves is 37. This is under the calculated maximum number of moves of 45.
@@ -47,7 +48,7 @@ The following graphs were made from 300 data points with 5 outliers removed. Eac
 <img src="res/num-moves.PNG" width="450">
 
 ## How to compile
-This project was developed and tested for Linux and Windows. The Makefile will detect which operating system you are using and adjust the compilation instructions accordingly.
+This project was developed and tested for Linux and Windows. The Makefile will detect which operating system you are using and adjust the compilation instructions accordingly. You will also need to download [stb_image.h](https://github.com/nothings/stb/blob/master/stb_image.h) and move it into the project directory.
 
 ### Linux
 To install required dependencies, open a terminal in the project directory and run:
@@ -55,20 +56,18 @@ To install required dependencies, open a terminal in the project directory and r
 sudo apt-get update
 bash install.sh
 ```
-Next, download [stb_image.h](https://github.com/nothings/stb/blob/master/stb_image.h) and move it into the project directory. Run ``` make ``` to create an executable.
+Next, run ``` make ``` to create an executable.
 
 ### Windows
-To install dependencies, download [stb_image.h](https://github.com/nothings/stb/blob/master/stb_image.h), [glfw](https://github.com/glfw/glfw) and [glew](https://github.com/nigels-com/glew) and move the folders/files into the project directory. I used glew version 2.1.0 and glfw version 3.3.7.
+MSYS2 and MinGW are needed to install dependencies. You can install it [here](https://www.msys2.org/) if you don't already have it.
 
-In the project directory, run:
+Launch ```MSYS MinGW 64-bit``` from the ```Start``` window, and run:
 ```
-  tar -xf glew-2.1.0.zip
-  tar -xf glfw-3.3.7.zip
-  mkdir lib
-  move glew-2.1.0\include\GL\glew.h lib
-  move glew-2.1.0\include\GLFW\glfw3.h lib
- ```
-Run make to compile into an executable.
+  pacman -S mingw-w64-x86_64-glew
+  pacman -S mingw-w64-x86_64-glfw
+  pacman -S mingw-w64-x86_64-glm
+```
+Run ```make``` to compile into an executable.
 
 ## Controls
 To manually twist the faces of the cube, use ```F```, ```B```, ```R```, ```L```, ```U```, and ```D``` for 90° counter-clockwise turns. Hold ```SHIFT``` while pressing the keys for 90° clockwise turns. Hold ```2``` for 180° clockwise turns.
@@ -91,4 +90,3 @@ Click [here](https://jperm.net/3x3/moves) to learn more about moves used to solv
 [Inspiration for visualizer](https://iamthecu.be/)
 
 [Overview of computer cubing](https://www.jaapsch.net/puzzles/compcube.htm)
-This project was developed for Windows. To install dependencies, download stb_image.h, glfw and glew and move the folders/files into the project directory. I used glew version 2.1.0 and glfw version 3.3.7.

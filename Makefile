@@ -7,7 +7,7 @@ else
 endif
 LDFLAGS = -g
 ifeq ($(OS), Windows_NT)
-	LDLIBS = -I/lib -lglfw3 -lopengl32 -lglew32
+	LDLIBS = -I/mingw64/include/ -L/mingw64/lib -lglfw3 -lopengl32 -lglew32
 else
 	LDLIBS = -lglfw -lGL -lGLEW -lpthread
 endif
