@@ -67,7 +67,7 @@ Launch ```MSYS MinGW 64-bit``` from the ```Start``` window, and run:
   pacman -S mingw-w64-x86_64-glfw
   pacman -S mingw-w64-x86_64-glm
 ```
-Run ```make``` to compile into an executable.
+In the project directory, run ```make``` to compile into an executable.
 
 ## Controls
 To manually twist the faces of the cube, use ```F```, ```B```, ```R```, ```L```, ```U```, and ```D``` for 90° counter-clockwise turns. Hold ```SHIFT``` while pressing the keys for 90° clockwise turns. Hold ```2``` for 180° clockwise turns.
